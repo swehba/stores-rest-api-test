@@ -10,7 +10,9 @@ class UserTest(BaseTest):
                 response = client.post('/register', data={'username': 'test', 'password': '1234'})
                 self.assertEqual(response.status_code, 201)
                 self.assertIsNotNone(UserModel.find_by_username('test'))
-                self.assertEqual(response.data, json.loads({'message': 'User created successfully.'}))
+                actual = json.loads(response.data)
+                expected = {'message': 'A user with username [test] was successfully created.'}
+                self.assertDictEqual(actual, expected)
 
     def test_register_and_login(self):
         with self.app() as client:

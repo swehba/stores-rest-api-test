@@ -20,7 +20,7 @@ class UserModel(db.Model):
         db.session.commit()
 
     def delete_from_db(self):
-        db.session.remove(self)
+        db.session.delete(self)
         db.session.commit()
 
     @classmethod
