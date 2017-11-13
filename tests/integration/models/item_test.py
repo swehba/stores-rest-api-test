@@ -1,9 +1,9 @@
 from models.item import ItemModel
 from models.store import StoreModel
-from tests.integration.integration_base_test import IntegrationBaseTest
+from tests.base_test import BaseTest
 
 
-class ItemTest(IntegrationBaseTest):
+class ItemTest(BaseTest):
     def test_crud(self):
         with self.app_context():
             store = StoreModel('My Store')

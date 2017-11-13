@@ -1,9 +1,9 @@
-from models.store import StoreModel
 from models.item import ItemModel
-from tests.integration.integration_base_test import IntegrationBaseTest
+from models.store import StoreModel
+from tests.base_test import BaseTest
 
 
-class StoreTest(IntegrationBaseTest):
+class StoreTest(BaseTest):
     def setUp(self):
         super().setUp()
         self.store = StoreModel("Macys")
