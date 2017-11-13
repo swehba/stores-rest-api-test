@@ -17,7 +17,7 @@ class UserRegister(Resource):
                         required=True,
                         help="The user's password. Required.")
 
-    def post(self, username, password):
+    def post(self):
         data = UserRegister.parser.parse_args()
         username = data['username']
         password = data['password']
