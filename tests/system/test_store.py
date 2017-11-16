@@ -11,7 +11,7 @@ class StoreTest(BaseTest):
                 response = client.post('/store/Macys')
                 self.assertEqual(response.status_code, 201)
                 self.assertIsNotNone(StoreModel.find_by_name('Macys'))
-                expected = {'name': 'Macys', 'items': []}
+                expected = {'id': 1, 'name': 'Macys', 'items': []}
                 actual = json.loads(response.data)
                 self.assertEqual(actual, expected)
 
@@ -39,7 +39,7 @@ class StoreTest(BaseTest):
                 response = client.get('/store/Macys')
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(json.loads(response.data),
-                                 {'name': 'Macys', 'items': []})
+                                 {'id': 1, 'name': 'Macys', 'items': []})
 
     def test_store_not_found(self):
         with self.app() as client:
@@ -57,7 +57,8 @@ class StoreTest(BaseTest):
                 response = client.get('/store/Macys')
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(json.loads(response.data),
-                                 {'name': 'Macys',
+                                 {'id': 1,
+                                  'name': 'Macys',
                                   'items': [
                                      {'name': 'chair',
                                       'price': 19.99
@@ -74,10 +75,12 @@ class StoreTest(BaseTest):
                 self.assertEqual(json.loads(response.data), {
                     'stores': [
                         {
+                            'id': 1,
                             'name': 'store1',
                             'items': []
                         },
                         {
+                            'id': 2,
                             'name': 'store2',
                             'items': []
                         }
@@ -96,10 +99,12 @@ class StoreTest(BaseTest):
                 self.assertEqual(json.loads(response.data), {
                     'stores': [
                         {
+                            'id': 1,
                             'name': 'store1',
                             'items': [{'name': 'item1', 'price': 1.23}]
                         },
                         {
+                            'id': 2,
                             'name': 'store2',
                             'items': [{'name': 'item2', 'price': 4.56}]
                         }
