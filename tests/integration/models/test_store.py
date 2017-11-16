@@ -24,10 +24,10 @@ class StoreTest(BaseTest):
             item = self.add_item_to_store("chair", 123.45)
             actual = self.store.json()
             expected = {
+                "id": 1,
                 "name": "Macys",
                 "items": [
                     {
-                        "id": 1,
                         "name": item.name,
                         "price": item.price
                     }
