@@ -6,15 +6,16 @@ from tests.base_test import BaseTest
 class StoreTest(BaseTest):
     def setUp(self):
         super().setUp()
-        self.store = StoreModel("Macys")
 
     def test_initial_item_list(self):
-        self.assertEqual(self.store.items.all(), [])
+        store = StoreModel("Macys")
+        self.assertEqual(store.items.all(), [])
 
     def test_json(self):
         with self.app_context():
-            self.store.save_to_db()
-            actual = self.store.json()
+            store = StoreModel("Macys")
+            store.save_to_db()
+            actual = store.json()
             expected = {
                 "id": 1,
                 "name": "Macys",
@@ -22,8 +23,9 @@ class StoreTest(BaseTest):
             }
             self.assertEqual(actual, expected)
 
-            item = self.add_item_to_store("chair", 123.45)
-            actual = self.store.json()
+            item = ItemModel("chair", 123.45, store.id)
+            item.save_to_db()
+            actual = store.json()
             expected = {
                 "id": 1,
                 "name": "Macys",
@@ -38,40 +40,27 @@ class StoreTest(BaseTest):
 
     def test_find_by_name(self):
         with self.app_context():
-            s = StoreModel.find_by_name("Macys")
-            self.assertIsNotNone(s)
+            StoreModel("Macys").save_to_db()
+            self.assertIsNotNone(StoreModel.find_by_name("Macys"))
 
     def test_crud(self):
         with self.app_context():
-            s = StoreModel.find_by_name("Macys")
-            self.assertIsNone(s)
-            self.store.save_to_db()
-            s = StoreModel.find_by_name("Macys")
-            self.assertIsNotNone(s)
-            self.store.delete_from_db()
-            s = StoreModel.find_by_name("Macys")
-            self.assertIsNone(s)
+            store1 = StoreModel.find_by_name("Macys")
+            self.assertIsNone(store1)
+            store1 = StoreModel("Macys")
+            store1.save_to_db()
+            store2 = StoreModel.find_by_name("Macys")
+            self.assertIsNotNone(store2)
+            store1.delete_from_db()
+            store2 = StoreModel.find_by_name("Macys")
+            self.assertIsNone(store2)
 
     def test_store_relationships(self):
         with self.app_context():
-            self.store.save_to_db()
-            item = self.add_item_to_store("chair", 99.99)
+            store = StoreModel("Macys")
+            store.save_to_db()
+            item = ItemModel("chair", 99.99, store.id)
             item.save_to_db()
-            self.assertEqual(self.store.items.count(), 1)
-            self.assertEqual(self.store.items.first().name, 'chair')
+            self.assertEqual(store.items.count(), 1)
+            self.assertEqual(store.items.first().name, 'chair')
 
-    def add_item_to_store(self, item_name, item_price):
-        """
-        Create an item and associate it with self.store. Must be called within an app context.
-
-        :param item_name: The name of the item.
-        :type item_name: str
-        :param item_price: The price of the item.
-        :type item_price: float
-        :return: The item that was added.
-        :rtype: ItemModel
-        """
-        self.store.save_to_db()
-        item = ItemModel(item_name, item_price, self.store.id)
-        item.save_to_db()
-        return item
