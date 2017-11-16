@@ -15,6 +15,7 @@ class StoreTest(BaseTest):
         with self.app_context():
             actual = self.store.json()
             expected = {
+                "id": 1,
                 "name": "Macys",
                 "items": []
             }
