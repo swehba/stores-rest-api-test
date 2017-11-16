@@ -29,4 +29,4 @@ class UserTest(BaseTest):
                 client.post('/register', data={'username': 'test', 'password': '1234'})
                 response = client.post('/register', data={'username': 'test', 'password': '1234'})
                 self.assertEqual(response.status_code, 400)
-                self.assertEqual(json.loads(response.data), {'message': 'A user with the username [test] already exists.'})
+                self.assertEqual(json.loads(response.data), {'message': 'Username already exists.'})

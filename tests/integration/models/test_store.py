@@ -26,6 +26,7 @@ class StoreTest(BaseTest):
                 "name": "Macys",
                 "items": [
                     {
+                        "id": 1,
                         "name": item.name,
                         "price": item.price
                     }
