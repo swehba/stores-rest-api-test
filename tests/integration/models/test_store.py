@@ -13,6 +13,7 @@ class StoreTest(BaseTest):
 
     def test_json(self):
         with self.app_context():
+            self.store.save_to_db()
             actual = self.store.json()
             expected = {
                 "id": 1,
@@ -37,7 +38,6 @@ class StoreTest(BaseTest):
 
     def test_find_by_name(self):
         with self.app_context():
-            self.store.save_to_db()
             s = StoreModel.find_by_name("Macys")
             self.assertIsNotNone(s)
 
